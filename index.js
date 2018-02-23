@@ -1,9 +1,12 @@
-const STORE = [
-  {name: 'apples', checked: false},
-  {name: 'oranges', checked: false},
-  {name: 'milk', checked: true},
-  {name: 'bread', checked: false}
-];
+const STORE = {
+  items: [
+      {name: 'apples', checked: false},
+      {name: 'oranges', checked: false},
+      {name: 'milk', checked: true},
+      {name: 'bread', checked: false}
+  ],
+  hideCompleted: false,
+};
 
 function generateItemElement(item, itemIndex, template) {
   return `
@@ -36,7 +39,7 @@ function renderShoppingList() {
 //Join together the individual item strings intoert the <li>s string inside the .js-shopping-list <ul> in one long string
 // Ins the DOM.
   console.log('renderShoppingList works');
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
     // insert that HTML into the DOM
     $('.js-shopping-list').html(shoppingListItemsString);
 }
@@ -44,7 +47,7 @@ function renderShoppingList() {
 //changes store
 function addItemToShoppingList(itemName) {
     console.log(`Adding "${itemName}" to shopping list`);
-    STORE.push({name: itemName, checked: false});
+    STORE.items.push({name: itemName, checked: false});
   }
 
   //event listener function
@@ -63,7 +66,7 @@ function handleNewItemSubmit() {
 
 function toggleCheckedForListItem(itemIndex) {
   console.log("Toggling checked property for item at index " + itemIndex);
-  STORE[itemIndex].checked = !STORE[itemIndex].checked;
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
 
@@ -85,7 +88,7 @@ function handleItemCheckClicked() {
 
 function deleteItem(index) {
     //remove elements from starting - index to that one element
-    STORE.splice(index, 1);
+    STORE.items.splice(index, 1);
   }
 
 function handleDeleteItemClicked() {
@@ -96,14 +99,31 @@ function handleDeleteItemClicked() {
     deleteItem(itemIndex);
     renderShoppingList();
   });
-    //change store
+}
 
-// You should be able to delete items from the list
-//index of item we clicked on
-//const itemIndex = getItemIndexFromElement(event.currentTarget);
-//deleteItem(itemIndex);
-//renderShoppingList();
-  
+function hideCheckedItems() {
+  const filteredCheckedItems = STORE.items.filter( item => !item.checked);
+  const shoppingListItemsString = generateShoppingItemsString(filteredCheckedItems);
+  $('.js-shopping-list').html(shoppingListItemsString);
+
+  console.log(filteredCheckedItems);
+}
+
+function handleHideCompletedItems () {
+  console.log('working!!!');
+  $('#check_selection').change(function() {
+    if( $('input[type=checkbox]').prop('checked')) {
+      console.log('checked!');
+      hideCheckedItems();
+    } else {
+      console.log('un-checked!');
+      renderShoppingList();
+    }
+  });
+  //get related user info from DOM
+  //change STORE
+  //render
+
 }
 
 function handleShoppingList() {
@@ -111,6 +131,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleHideCompletedItems();
 }
 
 $(handleShoppingList);
