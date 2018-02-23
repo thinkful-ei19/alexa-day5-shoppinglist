@@ -6,7 +6,6 @@ const STORE = {
       {name: 'bread', checked: false}
   ],
   hideCompleted: false,
-  searchBox:'alpha'
 };
 
 function generateItemElement(item, itemIndex, template) {
@@ -123,11 +122,36 @@ function handleHideCompletedItems () {
   });
 }
 
+function searchForItems(word) {
+  const searching = STORE.items.filter( str => str.name === word);
+  const newHtmlString = generateShoppingItemsString(searching);
+  //gen. new HTML
+  $('.js-shopping-list').html(newHtmlString);
+
+}
+
 function handleSearchedForItems() {
    //get related user info from DOM
   //change STORE
   //render
   console.log("searching!!!!");
+
+  // $('#search_submit_button').click(function(event) {
+  //   event.preventDefault();
+  //   const searchWord = $('#search-box').val();
+  //   console.log(searchWord);
+  //   $('#search-box').val('');
+  //   searchForItems(searchWord);
+  // });
+
+  $('#search-box').keyup(function() {
+    const searchWord = $('#search-box').val();
+    if(searchWord === '') {
+      renderShoppingList();
+    } else {
+      searchForItems(searchWord);
+    }
+  });
 }
 
 function handleShoppingList() {
