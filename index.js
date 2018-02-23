@@ -6,6 +6,7 @@ const STORE = {
       {name: 'bread', checked: false}
   ],
   hideCompleted: false,
+  searchBox:'alpha'
 };
 
 function generateItemElement(item, itemIndex, template) {
@@ -120,10 +121,13 @@ function handleHideCompletedItems () {
       renderShoppingList();
     }
   });
-  //get related user info from DOM
+}
+
+function handleSearchedForItems() {
+   //get related user info from DOM
   //change STORE
   //render
-
+  console.log("searching!!!!");
 }
 
 function handleShoppingList() {
@@ -132,6 +136,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleHideCompletedItems();
+  handleSearchedForItems();
 }
 
 $(handleShoppingList);
