@@ -9,6 +9,7 @@ const STORE = {
 };
 
 function generateItemElement(item, itemIndex, template) {
+  //returns html element as a string
   return `
   <li class="js-item-index-element" data-item-index="${itemIndex}">
     <span class="shopping-item js-shopping-item ${item.checked ? 
@@ -25,13 +26,14 @@ function generateItemElement(item, itemIndex, template) {
 }
 
 function generateShoppingItemsString(shoppingList) {
-    console.log("Generating shopping list element");
-    
+    //console.log("Generating shopping list element");
+    //returns a block of strings
     const items = shoppingList.map((item, index) => generateItemElement(item, index));
     return items.join('');
 }
   
 function renderShoppingList() {
+  //rendering te string to HTML DOM elements
 //For each item in STORE, generate a string representing an <li> with:
 //  the item name rendered as inner text
 //the item's index in the STORE set as a data attribute on the <li> (more on that in a moment)
@@ -41,19 +43,20 @@ function renderShoppingList() {
   console.log('renderShoppingList works');
   const shoppingListItemsString = generateShoppingItemsString(STORE.items);
     // insert that HTML into the DOM
+    //parsing string to HTML DOM elements
     $('.js-shopping-list').html(shoppingListItemsString);
 }
 
-//changes store
+
 function addItemToShoppingList(itemName) {
     console.log(`Adding "${itemName}" to shopping list`);
     STORE.items.push({name: itemName, checked: false});
   }
 
-  //event listener function
+  //callback function
 function handleNewItemSubmit() {
 // You should be able to add items to the list
-   $ ('#js-shopping-list-form').submit(function(event) {
+   $('#js-shopping-list-form').submit(function(event) {
     event.preventDefault();
     const newItemName = $('.js-shopping-list-entry').val();
     console.log(newItemName);
@@ -66,20 +69,20 @@ function handleNewItemSubmit() {
 
 function toggleCheckedForListItem(itemIndex) {
   console.log("Toggling checked property for item at index " + itemIndex);
+  //itemIndex has to be a number
   STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
 
 function getItemIndexFromElement(item) {
-  const itemIndexString = $(item)
-    .closest('.js-item-index-element')
-    .attr('data-item-index');
+  const itemIndexString = $(item).closest('.js-item-index-element').attr('data-item-index');
   return parseInt(itemIndexString, 10);
 }
 
 function handleItemCheckClicked() {
   $('.js-shopping-list').on('click', `.js-item-toggle`, event => {
     console.log('`handleItemCheckClicked` ran');
+    //item is the button
     const itemIndex = getItemIndexFromElement(event.currentTarget);
     toggleCheckedForListItem(itemIndex);
     renderShoppingList();
